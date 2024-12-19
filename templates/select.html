@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>FoodApp</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Nourriture, recommandation, santé" name="keywords">
+    <meta content="Site de recommandation de repas" name="description">
+
+    <!-- Favicon -->
+    <link href="" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='img/favicon.ico')}}">
+    <link href="{{ url_for('static', filename = 'lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css')}}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+
+    <!-- Template Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slide_text.css')}}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="">
+
+    <!--=============== SWIPER CSS ===============-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/swiper-bundle.min.css')}}">
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.css')}}">
+</head>
+
+<body>
+    <div class="container-xxl bg-white p-0">
+
+
+
+
+        <!-- Navbar & Hero Start -->
+        <div class="container-xxl position-relative p-0 ">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
+                <a href="{{url_for('index')}}" class="navbar-brand p-0">
+                    <h1 class="text-primary me-lg-5"><i class="fa fa-utensils me-3"></i>FoodApp</h1>
+                    <!-- <img src="img/logo.png" alt="Logo"> -->
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars"></span>
+                </button>
+
+
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto py-0 pe-4">
+                        <a href="{{url_for('index')}}" class="nav-item nav-link text-primary">Home</a>
+                        <a href="{{url_for('Scoring')}}" class="nav-item nav-link active">Scoring</a>
+                        {% if session['nom_user']%}
+                        <a href="{{url_for('auth.logout')}}" class="nav-item nav-link text-primary"><i class="fa fa-user me-3"></i>Se deconnecter</a>
+                        {% else %}
+                            <a href="{{url_for('auth.connexion')}}" class="nav-item nav-link text-primary"><i class="fa fa-user me-3"></i>Se Connecter</a>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+            </nav>
+
+
+
+            <div style="height: 150vh;"  class="container-xxl py-5 bg-dark hero-header hero-header mb-5">
+                <div class="note-bien">
+                    <p>Entrez les differents ingredients que vous avez a votre disposition et nous nous chargeons de vous proposer un mets suculent que vous pourriez concoter avec.</p>
+                    <p>Si le melanges d'ingredients ne correspond a aucun repas, les repas les plus proches vous serons quand meme proposés</p>
+                    <p>Aussi, seul les ingredients presents dans les suggestions pourront etre ajoutés a la liste</p>
+                </div>
+                <div class="mt-md-5"> 
+                    <form class="form-add">
+                    <input type="text" name="name_repas" placeholder="Entrer un ingredients" class="add" id="add" >
+                    <button class="text-primary button-add">
+                        <div class="button-add-border text-center">
+                            <i class="fa fa-plus"></i>
+                        </div> Ajouter un ingredient</button>
+                    </form>
+                </div>
+                <div class="div-propositions bg-white">
+                    <ul id="propositions" class="text-black"></ul>
+                </div>
+
+
+                <div>
+                    <form class="div-ingredient" method="post" action="{{ url_for('scoring.score') }}">
+
+                        <table class="table-ingredient text-white" >
+                            <thead class="row-ingredient row-ingredient-head">
+                                <tr>
+                                    <th>Ingredients</th>
+                                </tr>
+                            </thead>
+    
+                            <tbody id="liste-ingredients">
+
+                            </tbody>
+                        </table>
+                        <button class="card__button border-radius-5 mt-5" id="send">Envoyer</button>
+                    </form>
+                </div>
+
+                {% if 'score' in current_route %}
+                <div class="card__container swiper bg-white mt-5">
+                    <div class="card__content">
+                       <div class="swiper-wrapper">
+                    {%  for repas in Repas %}     
+                             <article class="card__article swiper-slide">
+                                <div class="card__image">
+                                   <img src="{{url_convert(repas.image_url)}}" alt="{{url_convert(repas.image_url)}}" class="card__img" >
+                                   <div class="card__shadow"></div>
+                                </div>
+                 
+                                <div class="card__data">
+                                   <h3 class="card__name">{{ repas.nom }}</h3>
+                                   <p class="card__description">
+                                      {{ repas.type }} du Cameroun et d'Afrique
+                                   </p>
+                 
+                                   <form method="post" action="{{ url_for('repas') }}">
+                                      <button class="card__button" value="{{repas.id}}" name = "id">Voir Plus</button>
+                                   </form>
+                                </div>
+                             </article>
+                    {% endfor %}   
+              
+                       </div>
+                    </div>
+        
+                    <!-- Navigation buttons -->
+                    <div class="swiper-button-next text-primary">
+                       <i class="ri-arrow-right-s-line"></i>
+                    </div>
+                    
+                    <div class="swiper-button-prev text-primary">
+                       <i class="ri-arrow-left-s-line"></i>
+                    </div>
+        
+                    <!-- Pagination -->
+                    <div class="swiper-pagination"></div>
+                 </div>
+                {% endif %}
+
+    <!--=============== SWIPER JS ===============-->
+    <script src="{{ url_for('static', filename='assets/js/swiper-bundle.min.js')}}"></script>
+    <script src=""></script>
+   
+    <!--=============== MAIN JS ===============-->
+    <script src="{{ url_for('static', filename='assets/js/main.js')}}"></script>
+
+
+            </div>
+
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/wow/wow.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/easing/easing.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/counterup/counterup.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/tempusdominus/js/moment.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/tempusdominus/js/moment-timezone.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js')}}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ url_for('static', filename='js/main.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/ajax.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/ajax_work.js')}}"></script>
+
+</body>
+
+</html> 
