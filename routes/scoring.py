@@ -21,6 +21,11 @@ def score_repas(liste, repas, ingredients):
             poids_total += float(ingredients[ingre])
             if ingre in repas:
                 score += float(ingredients[ingre])
+
+    poid_repas = 0
+    for ingre in ingredients:
+        if ingre in repas:
+            poid_repas += float(ingredients[ingre])
     if poids_total != 0:
         score = score/(poids_total)
     else:
@@ -82,27 +87,31 @@ def Scoring(liste = ['sel'], types={}, r_i = {}, ingredients = {}):
 
 @scoring.route('/score', methods=["POST", "GET"])
 def score():
-    url = "http://127.0.0.1:5000/api/types"
-    types = requests.get(url)
-    types = types.json()
-    url = "http://127.0.0.1:5000/api/ingredient_poids"
-    ingredient = requests.get(url)
-    ingredient = ingredient.json()
-    url = "http://127.0.0.1:5000/api/recette_noms_ingredients"
-    r_ingre = requests.get(url)
-    r_ingre = r_ingre.json()
+    if 'nom_user' in sess:
+        url = "http://127.0.0.1:5000/api/types"
+        types = requests.get(url)
+        types = types.json()
+        url = "http://127.0.0.1:5000/api/ingredient_poids"
+        ingredient = requests.get(url)
+        ingredient = ingredient.json()
+        url = "http://127.0.0.1:5000/api/recette_noms_ingredients"
+        r_ingre = requests.get(url)
+        r_ingre = r_ingre.json()
 
-    if request.method == "POST":
-        checkboxes = request.form.getlist('ingredients')
-        repas = Scoring(checkboxes, types, r_ingre, ingredient)
-        print(repas)
-        if repas == None:
-            repas = []
-        r = Recettes()
-        rep = []
-        for rp in repas:
-            rp = r.Search_recette_nom(rp)
-            rep.append(rp)
+        if request.method == "POST":
+            checkboxes = request.form.getlist('ingredients')
+            repas = Scoring(checkboxes, types, r_ingre, ingredient)
+            print(repas)
+            if repas == None:
+                repas = []
+            r = Recettes()
+            rep = []
+            for rp in repas:
+                rp = r.Search_recette_nom(rp)
+                rep.append(rp)
+    else:
+        message = "Veuillez vous connecter avant d'avoir acces a cette fonctionalité"
+        return redirect(url_for('sucess', message = message, route = 'auth.connexion'))
     return render_template('select.html', current_route = request.path, Repas = rep, url_convert = Url_convert)
 
     

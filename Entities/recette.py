@@ -57,6 +57,13 @@ class Favoris(Base):
         self.user_id = user_id
         self.Session = sessionmaker(bind = engine)
 
+    def Add_favoris(self):
+
+        session = self.Session()
+        session.add(self)
+        session.commit()
+        session.refresh(self)
+
     def ReadFavoris(self):
         session = self.Session()
         query = select(Favoris)
