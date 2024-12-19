@@ -21,6 +21,13 @@
                               <h3 class="card__name">{{ repas['nom'] }}</h3>
                               <p class="card__description">
                                  {{ cle }} du Cameroun et d'Afrique
+                                 {% if session['nom_user'] %}
+                                 <form action="{{ url_for('favoris') }}" method="post">
+                                 <button class="btn-favoris" value="{{repas['id']}}" name="repas">
+                                    <i class="fa fa-star text-white favoris" name="user" value = "{{session['nom_user']}}"></i>
+                                 </button>
+                                 </form>
+                                 {% endif %}
                               </p>
             
                               <form method="post" action="{{ url_for('repas') }}">

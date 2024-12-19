@@ -81,9 +81,10 @@ def erreur(message, route):
     flash(f"{message}", 'danger')
     return redirect(url_for(f'{route}'))
 
-@app.route('/favoris')
+@app.route('/favoris', methods=["POST", "GET"])
 def favoris():
-    pass
+    if request.method == "POST":
+        donnees = request.form
 
 
 if __name__ == '__main__':

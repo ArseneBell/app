@@ -590,3 +590,12 @@
     border-bottom-style: solid;
     border-bottom-width: 1px;
 }
+
+.btn-favoris{
+    border: none;
+    background: transparent;
+}
+
+favoris{
+    font-size: 2rem;
+}
