@@ -21,14 +21,8 @@ def score_repas(liste, repas, ingredients):
             poids_total += float(ingredients[ingre])
             if ingre in repas:
                 score += float(ingredients[ingre])
-
-    poids_repas = 0
-    for ingre in ingredients:
-        if ingre in repas:
-            poids_repas += float(ingredients[ingre])
-
     if poids_total != 0:
-        score = score/(poids_total + poids_repas/math.sqrt(len(repas)))
+        score = score/(poids_total)
     else:
         score = 0
 
