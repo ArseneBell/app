@@ -85,12 +85,18 @@ def erreur(message, route):
 @app.route('/favoris', methods=["POST", "GET"])
 def favoris():
     if request.method == "POST":
-        donnees = request.form
-        repas = int(donnees['repas'])
-        user = int(donnees['user'])
-        f = Favoris(repas, user)
-        f.Add_favoris()
-    return redirect(url_for('index'))
+        data = request.get_json()
+        repas = data.get('repas')
+        user = data.get('user')
+        print(f"user = {user}")
+        f = Favoris(int(repas), int(user))
+        if not f.Search_favoris():
+            f.Add_favoris()
+            m = 'favoris ajouté'
+        else:
+            f.Del_favoris()
+            m = 'favoris supprimé'
+    return jsonify({"success": True, "message": m})
     
 
 
