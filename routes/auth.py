@@ -31,7 +31,8 @@ def next():
         tel = donnees['tel']
         anneeNaiss = donnees['anneeNaiss']
         user = User(tel = tel, anneeNaiss= anneeNaiss)
-        user.Update(sess['id'])
+        sess['id_user'] = user.Get_id()
+        user.Update(sess['id_user'])
 
         message = "Incription Terminée"
 

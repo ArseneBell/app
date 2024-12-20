@@ -47,6 +47,37 @@ INSERT INTO `User` VALUES (1,'Fortune','kamchamclaude@gmail.com','$2b$12$UQyUJz4
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Users`
+--
+
+DROP TABLE IF EXISTS `Users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) DEFAULT NULL,
+  `anneeNaiss` int DEFAULT NULL,
+  `sexe` varchar(255) DEFAULT NULL,
+  `tel` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `preferences` varchar(255) DEFAULT NULL,
+  `mot_de_pass` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Users`
+--
+
+LOCK TABLES `Users` WRITE;
+/*!40000 ALTER TABLE `Users` DISABLE KEYS */;
+INSERT INTO `Users` VALUES (1,'Bell',2005,'masculin','1234','kevin.bell@facsciences-uy1.cm','none','aomine477','user');
+/*!40000 ALTER TABLE `Users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `favoris`
 --
 
@@ -69,6 +100,7 @@ CREATE TABLE `favoris` (
 
 LOCK TABLES `favoris` WRITE;
 /*!40000 ALTER TABLE `favoris` DISABLE KEYS */;
+INSERT INTO `favoris` VALUES (1,8),(1,9);
 /*!40000 ALTER TABLE `favoris` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -193,4 +225,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-15 21:31:23
+-- Dump completed on 2024-12-20 14:37:17

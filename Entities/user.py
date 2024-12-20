@@ -55,7 +55,7 @@ class User(Base):
             if self.email != '':
                 result.email = self.email
             if self.sexe != '':
-                result.sexe != self.sexe
+                result.sexe = self.sexe
             if self.password != '':
                 result.password = self.password
             if self.tel != '':

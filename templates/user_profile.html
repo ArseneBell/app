@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil utilisateur</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Profil utilisateur</h1>
+    <form method="POST">
+        <div>
+            <label>Nom:</label>
+            <span>{{ user.nom }}</span>
+            <button type="button" onclick="editField('nom')">✏️</button>
+            <input type="text" id="nom" name="nom" value="{{ user.nom }}" style="display:none;">
+        </div>
+        <div>
+            <label>Année de naissance:</label>
+            <span>{{ user.anneeNaiss }}</span>
+            <button type="button" onclick="editField('anneeNaiss')">✏️</button>
+            <input type="number" id="anneeNaiss" name="anneeNaiss" value="{{ user.anneeNaiss }}" style="display:none;">
+        </div>
+        <div>
+            <label>Email:</label>
+            <span>{{ user.email }}</span>
+            <button type="button" onclick="editField('email')">✏️</button>
+            <input type="email" id="email" name="email" value="{{ user.email }}" style="display:none;">
+        </div>
+        <!-- Ajoutez d'autres champs ici -->
+        <button type="submit">Enregistrer les modifications</button>
+    </form>
+
+    <script>
+        function editField(fieldId) {
+            const span = document.querySelector(`span[for="${fieldId}"]`);
+            const input = document.getElementById(fieldId);
+            span.style.display = "none";
+            input.style.display = "block";
+        }
+    </script>
+</body>
+</html>
