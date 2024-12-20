@@ -20,7 +20,7 @@ def inscription():
             sess['nom_user'] = nom
             sess['id'] = user.Get_id()
 
-        return redirect(url_for('next'))
+        return redirect(url_for('auth.next'))
     return render_template('inscription.html')
 
 @auth.route('/inscription-suite', methods=["POST", "GET"])
@@ -31,7 +31,7 @@ def next():
         tel = donnees['tel']
         anneeNaiss = donnees['anneeNaiss']
         user = User(tel = tel, anneeNaiss= anneeNaiss)
-        user.Update(sess['id_user'])
+        user.Update(sess['id'])
 
         message = "Incription Terminée"
 
