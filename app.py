@@ -2,6 +2,7 @@ from flask import Flask, render_template,request, redirect, url_for, session as 
 from app.Entities.recette import *
 from app.Entities.ingredient import *
 from app.fonctions.fonctions import *
+from dash import Dash
 import requests
 from app import create_app
 
@@ -85,6 +86,12 @@ def erreur(message, route):
 def favoris():
     if request.method == "POST":
         donnees = request.form
+        repas = int(donnees['repas'])
+        user = int(donnees['user'])
+        f = Favoris(repas, user)
+        f.Add_favoris()
+    return redirect(url_for('index'))
+    
 
 
 if __name__ == '__main__':

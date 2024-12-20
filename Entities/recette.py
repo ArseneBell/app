@@ -58,11 +58,11 @@ class Favoris(Base):
         self.Session = sessionmaker(bind = engine)
 
     def Add_favoris(self):
-
-        session = self.Session()
-        session.add(self)
-        session.commit()
-        session.refresh(self)
+        if not self.Search_favoris():
+            session = self.Session()
+            session.add(self)
+            session.commit()
+            session.refresh(self)
 
     def ReadFavoris(self):
         session = self.Session()
@@ -71,7 +71,9 @@ class Favoris(Base):
         results = session.execute(query).scalars().all()
         return results
     
-    def Search_favoris(self, id):
+    def Search_favoris(self):
         session = self.Session()
-        result = session.query(Recettes).filter(Recettes.id == id).first()
-        return result
+        result = session.query(Favoris).filter(Favoris.recette_id == self.recette_id and Favoris.user_id == self.user_id).first()
+        if result == None:
+            return False
+        return True

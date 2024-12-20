@@ -23,13 +23,14 @@
                                  {{ cle }} du Cameroun et d'Afrique
                                  {% if session['nom_user'] %}
                                  <form action="{{ url_for('favoris') }}" method="post">
-                                 <button class="btn-favoris" value="{{repas['id']}}" name="repas">
-                                    <i class="fa fa-star text-white favoris" name="user" value = "{{session['nom_user']}}"></i>
+                                    <input type="hidden" name="repas" value="{{ repas['id'] }}">
+                                    <input type="hidden" name="user" value="{{ session['id_user'] }}">
+                                 <button class="btn-favoris">
+                                    <i class="fa fa-star text-white favoris"></i>
                                  </button>
                                  </form>
                                  {% endif %}
                               </p>
-            
                               <form method="post" action="{{ url_for('repas') }}">
                                  <button class="card__button" value="{{repas['id']}}" name = "id">Voir Plus</button>
                               </form>
