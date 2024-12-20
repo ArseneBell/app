@@ -22,13 +22,59 @@
                               <p class="card__description">
                                  {{ cle }} du Cameroun et d'Afrique
                                  {% if session['nom_user'] %}
-                                 <form action="{{ url_for('favoris') }}" method="post" id="form-favoris">
-                                    <input type="hidden" name="repas" value="{{ repas['id'] }}" id="repas">
-                                    <input type="hidden" name="user" value="{{ session['id_user'] }}" id="user">
-                                 <button class="btn-favoris">
-                                    <i class="fa fa-star text-white favoris"></i>
-                                 </button>
-                                 </form>
+                                 <form id="formulaire-fav">
+                                    <!-- Ajout des identifiants pour pouvoir les sélectionner -->
+                                    <input type="hidden" name="repas" id="repas" value="{{ repas['id'] }}">
+                                    <input type="hidden" name="user" id="user" value="{{ session['id_user'] }}">
+                                    
+                                    <!-- Spécifiez le type de bouton pour éviter le comportement submit -->
+                                    <button class="btn-favoris" type="submit">
+                                        <i class="fa fa-star text-white favoris"></i>
+                                    </button>
+                                </form>
+                                
+                                <div id="reponse"></div>
+                                
+                                <script>
+                                    // Vérifiez que le DOM est entièrement chargé avant de lancer le script
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        // Sélectionner le formulaire
+                                        const formulaire = document.getElementById('formulaire-fav');
+                                        
+                                        formulaire.addEventListener('submit', async function(event) {
+                                            alert('ok');  // Vérification que l'événement est bien capturé
+                                            event.preventDefault();  // Empêche la soumission par défaut du formulaire
+                                
+                                            // Récupération des données du formulaire
+                                            const formData = {
+                                                repas: document.getElementById('repas').value,  // Sélection correcte de l'input
+                                                user: document.getElementById('user').value     // Sélection correcte de l'input
+                                            };
+                                
+                                            try {
+                                                // Envoi des données de manière asynchrone via Fetch API
+                                                const response = await fetch('/submit-form', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(formData)
+                                                });
+                                
+                                                const result = await response.json();
+                                                console.log(result);
+                                                
+                                                // Affichage du message de succès
+                                                document.getElementById('reponse').innerText = result.message;
+                                
+                                            } catch (error) {
+                                                console.error('Erreur lors de l\'envoi des données :', error);
+                                                document.getElementById('reponse').innerText = 'Erreur lors de l\'envoi du formulaire.';
+                                            }
+                                        });
+                                    });
+                                </script>
+                                
                                  {% endif %}
                               </p>
                               <form method="post" action="{{ url_for('repas') }}">

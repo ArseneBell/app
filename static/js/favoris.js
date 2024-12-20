@@ -15,6 +15,7 @@ $(document).ready(function() {
             data: formData, // Données envoyées au serveur
             success: function(response) {
                 // Affichage du message de succès
+                console.log('ok')
                 $('#message').html(
                     `<p style="color: green;">${response.message} (Utilisateur: ${response.user}, Repas: ${response.repas})</p>`
                 );
@@ -22,6 +23,7 @@ $(document).ready(function() {
             error: function(xhr) {
                 // Affichage du message d'erreur
                 let errorResponse = JSON.parse(xhr.responseText);
+                alert('non')
                 $('#message').html(
                     `<p style="color: red;">Erreur: ${errorResponse.message}</p>`
                 );
