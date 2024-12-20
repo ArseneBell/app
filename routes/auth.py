@@ -30,6 +30,7 @@ def next():
         donnees = request.form
         tel = donnees['tel']
         anneeNaiss = donnees['anneeNaiss']
+        sess['id_user'] = user.Get_id()
         user = User(tel = tel, anneeNaiss= anneeNaiss)
         sess['id_user'] = user.Get_id()
         user.Update(sess['id_user'])

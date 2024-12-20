@@ -22,9 +22,9 @@
                               <p class="card__description">
                                  {{ cle }} du Cameroun et d'Afrique
                                  {% if session['nom_user'] %}
-                                 <form action="{{ url_for('favoris') }}" method="post">
-                                    <input type="hidden" name="repas" value="{{ repas['id'] }}">
-                                    <input type="hidden" name="user" value="{{ session['id_user'] }}">
+                                 <form action="{{ url_for('favoris') }}" method="post" id="form-favoris">
+                                    <input type="hidden" name="repas" value="{{ repas['id'] }}" id="repas">
+                                    <input type="hidden" name="user" value="{{ session['id_user'] }}" id="user">
                                  <button class="btn-favoris">
                                     <i class="fa fa-star text-white favoris"></i>
                                  </button>
