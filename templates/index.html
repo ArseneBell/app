@@ -22,59 +22,21 @@
                               <p class="card__description">
                                  {{ cle }} du Cameroun et d'Afrique
                                  {% if session['nom_user'] %}
-                                 <form id="formulaire-fav">
+                                 <form action="" class="star-form">
                                     <!-- Ajout des identifiants pour pouvoir les sélectionner -->
-                                    <input type="hidden" name="repas" id="repas" value="{{ repas['id'] }}">
-                                    <input type="hidden" name="user" id="user" value="{{ session['id_user'] }}">
+                                    <input type="hidden" name="repas" id="{{ repas['id'] }}" value="{{ repas['id'] }}">
+                                    <input type="hidden" name="user" id="user{{ repas['id'] }}" value="{{ session['id'] }}">
                                     
                                     <!-- Spécifiez le type de bouton pour éviter le comportement submit -->
-                                    <button class="btn-favoris" type="submit">
+                                    <button class="btn-favoris" type="submit" onclick="star()">
+                                       {% if repas['id'] in favoris%}
+                                        <i class="fa fa-star favoris" style="color: yellow;"></i>
+                                       {% else%}
                                         <i class="fa fa-star text-white favoris"></i>
+                                       {% endif %}
                                     </button>
-                                </form>
-                                
-                                <div id="reponse"></div>
-                                
-                                <script>
-                                    // Vérifiez que le DOM est entièrement chargé avant de lancer le script
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        // Sélectionner le formulaire
-                                        const formulaire = document.getElementById('formulaire-fav');
-                                        
-                                        formulaire.addEventListener('submit', async function(event) {
-                                            alert('ok');  // Vérification que l'événement est bien capturé
-                                            event.preventDefault();  // Empêche la soumission par défaut du formulaire
-                                
-                                            // Récupération des données du formulaire
-                                            const formData = {
-                                                repas: document.getElementById('repas').value,  // Sélection correcte de l'input
-                                                user: document.getElementById('user').value     // Sélection correcte de l'input
-                                            };
-                                
-                                            try {
-                                                // Envoi des données de manière asynchrone via Fetch API
-                                                const response = await fetch('/submit-form', {
-                                                    method: 'POST',
-                                                    headers: {
-                                                        'Content-Type': 'application/json'
-                                                    },
-                                                    body: JSON.stringify(formData)
-                                                });
-                                
-                                                const result = await response.json();
-                                                console.log(result);
-                                                
-                                                // Affichage du message de succès
-                                                document.getElementById('reponse').innerText = result.message;
-                                
-                                            } catch (error) {
-                                                console.error('Erreur lors de l\'envoi des données :', error);
-                                                document.getElementById('reponse').innerText = 'Erreur lors de l\'envoi du formulaire.';
-                                            }
-                                        });
-                                    });
-                                </script>
-                                
+                                 </form>
+                                                               
                                  {% endif %}
                               </p>
                               <form method="post" action="{{ url_for('repas') }}">
@@ -100,6 +62,54 @@
                <div class="swiper-pagination bg-primary text-primary"></div>
             </div>
          {% endfor %}
+         <script>
+                                 // Sélection de tous les formulaires ayant la classe "formulaire"
+                                 const formulaires = document.querySelectorAll('.star-form');
+                             
+                                 // Ajout de l'événement de soumission pour chaque formulaire
+                                 formulaires.forEach(formulaire => {
+                                     formulaire.addEventListener('submit', async function(event) {
+                                         event.preventDefault(); // Empêche le rechargement de la page
+                             
+                                         // Récupération des données du formulaire actuel
+                                         const formData = new FormData(formulaire);
+                                         console.log(formData)
+                             
+                                         // Conversion en objet pour l'envoyer au serveur
+                                         const formDataObj = Object.fromEntries(formData.entries());
+                             
+                                         try {
+                                             // Envoi de la requête via la Fetch API
+                                             const response = await fetch('/favoris', {
+                                                 method: 'POST',
+                                                 headers: {
+                                                     'Content-Type': 'application/json'
+                                                 },
+                                                 body: JSON.stringify(formDataObj)
+                                             });
+                             
+                                             const result = await response.json();
+                                             console.log('Réponse du serveur :', result);
+
+                                             const icon = formulaire.querySelector('i.favoris');
+
+                                             if (icon.classList.contains('text-white')) {
+                                                // Si la classe 'text-white' est présente, on la retire et on change la couleur
+                                                icon.classList.remove('text-white'); // Retirer l'ancienne classe
+                                                icon.style.color = 'yellow'; // Appliquer la couleur jaune
+                                             } else {
+                                                // Si la classe 'text-white' n'est pas présente, on l'ajoute
+                                                icon.classList.add('text-white'); // Ajouter la nouvelle classe
+                                                icon.style.color = ''; // Retirer la couleur personnalisée
+                                             }
+
+                             
+                                         } catch (error) {
+                                             console.error('Erreur lors de l\'envoi des données :', error);
+                                         }
+                                     });
+                                 });
+                                </script>
           
          
          <!--=============== SWIPER JS ===============-->
@@ -108,6 +118,7 @@
    
          <!--=============== MAIN JS ===============-->
     <script src="{{ url_for('static', filename='assets/js/main.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/favoris.js')}}"></script>
 
         <!-- Body End -->
 {% endblock %}

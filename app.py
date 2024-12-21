@@ -16,9 +16,19 @@ def index():
     recette = requests.get(url)
     recette = recette.json()
     tpe = types_sort(recette)
-    print(closest_string('bonjr', ['bon', 'bonsoir', 'bonjour']))
 
-    return render_template('index.html', types = tpe, url_convert = Url_convert)
+    url = "http://127.0.0.1:5000/api/favoris"
+    fav = requests.get(url)
+    fav = fav.json()
+
+    favoris = []
+    if 'id' in sess:
+        for f in fav:
+            if f['id_user'] == sess['id']:
+                favoris.append(f['id_recette'])
+    print(favoris)
+
+    return render_template('index.html', types = tpe, url_convert = Url_convert, favoris = favoris)
 
 
 @app.route('/repas', methods=["POST", "GET"])
@@ -85,12 +95,18 @@ def erreur(message, route):
 @app.route('/favoris', methods=["POST", "GET"])
 def favoris():
     if request.method == "POST":
-        donnees = request.form
-        repas = int(donnees['repas'])
-        user = int(donnees['user'])
-        f = Favoris(repas, user)
-        f.Add_favoris()
-    return redirect(url_for('index'))
+        data = request.get_json()
+        repas = data.get('repas')
+        user = data.get('user')
+        print(f"user = {user}")
+        f = Favoris(int(repas), int(user))
+        if not f.Search_favoris():
+            f.Add_favoris()
+            m = 'favoris ajouté'
+        else:
+            f.Del_favoris()
+            m = 'favoris supprimé'
+    return jsonify({"success": True, "message": m})
     
 
 
