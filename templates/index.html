@@ -25,11 +25,15 @@
                                  <form action="" class="star-form">
                                     <!-- Ajout des identifiants pour pouvoir les sélectionner -->
                                     <input type="hidden" name="repas" id="{{ repas['id'] }}" value="{{ repas['id'] }}">
-                                    <input type="hidden" name="user" id="user{{ repas['id'] }}" value="{{ session['id_user'] }}">
+                                    <input type="hidden" name="user" id="user{{ repas['id'] }}" value="{{ session['id'] }}">
                                     
                                     <!-- Spécifiez le type de bouton pour éviter le comportement submit -->
                                     <button class="btn-favoris" type="submit" onclick="star()">
+                                       {% if repas['id'] in favoris%}
+                                        <i class="fa fa-star favoris" style="color: yellow;"></i>
+                                       {% else%}
                                         <i class="fa fa-star text-white favoris"></i>
+                                       {% endif %}
                                     </button>
                                  </form>
                                                                

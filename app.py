@@ -16,9 +16,19 @@ def index():
     recette = requests.get(url)
     recette = recette.json()
     tpe = types_sort(recette)
-    print(closest_string('bonjr', ['bon', 'bonsoir', 'bonjour']))
 
-    return render_template('index.html', types = tpe, url_convert = Url_convert)
+    url = "http://127.0.0.1:5000/api/favoris"
+    fav = requests.get(url)
+    fav = fav.json()
+
+    favoris = []
+    if 'id' in sess:
+        for f in fav:
+            if f['id_user'] == sess['id']:
+                favoris.append(f['id_recette'])
+    print(favoris)
+
+    return render_template('index.html', types = tpe, url_convert = Url_convert, favoris = favoris)
 
 
 @app.route('/repas', methods=["POST", "GET"])

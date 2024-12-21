@@ -54,7 +54,7 @@ def connexion():
         if user.Connexion():
             sess.permanent = True
             sess['nom_user'] = nom
-            sess['id_user'] = user.Get_id()
+            sess['id'] = user.Get_id()
             return redirect(url_for('sucess', message = message, route = 'index'))
         else:
             return redirect(request.url)
