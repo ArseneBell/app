@@ -106,6 +106,7 @@
                         <a href="{{url_for('index')}}" class="nav-item nav-link active">Home</a>
                         <a href="{{url_for('Scoring')}}" class="nav-item nav-link text-primary">Scoring</a>
                         {% if session['nom_user']%}
+                        <a href="{{url_for('dashboard.redirect_dashboard')}}" class="nav-item nav-link text-primary">Dashboard</a>
                         <a href="{{url_for('user.index')}}" class="nav-item nav-link text-primary"><div style="display: inline;">{{session['nom_user']}}<div class="icon-user-div"><i class="fa fa-user"></i></div></div></a>
                         {% else %}
                             <a href="{{url_for('auth.connexion')}}" class="nav-item nav-link text-primary"><i class="fa fa-user me-1"></i>Se Connecter</a>
