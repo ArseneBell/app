@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodApp</title>
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins&amp;display=swap'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+
+    {% with messages = get_flashed_messages(with_categories = true ) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div id="flooter">
+                <div class="alert alert-{{ category }} alert-dismisstble fad show" id="alert" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" id="close" data-dismiss="alert" aria-label="Close" onclick="document.getElementById('flooter').remove()">
+                        <div aria-hidden="true" class="ok">OK</div>
+                    </button>
+                </div>
+            </div>
+            
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+</head>
+<body>
+
+    {% if session['nom_user'] %}
+
+        <div class="entete">
+            <div class="user-info">
+            <div class="profile-picture">
+                <img src="" alt="">
+            </div>
+            <div class="user-name">{{ session['nom_user']|title }}</div>
+        </div>
+        </div>
+        <button><a href="{{ url_for('logout') }}"><li>Se deconnecter</li></a></button>
+
+    {% else %}        
+        <div class="entete">
+            <button><a href="{{ url_for('inscription') }}"><li>S'inscrire</li></a></button>
+            <button><a href="{{ url_for('connexion') }}"><li>Se Connecter</li></a></button>
+        </div>
+    {% endif %}
+
+    <div>
+        {% block content %} {% endblock %}
+    </div>
+</body>
+</html>

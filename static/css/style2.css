@@ -1,0 +1,168 @@
+/* Utilisation de la police Poppins pour un design moderne */
+body {
+  background-image: url("{{url_for('static', filename = 'img/bg-connect.jpg')}}") ;
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease;
+}
+
+.hero {
+z-index: 3;
+background: linear-gradient(rgba(15, 23, 43, .8), rgba(15, 23, 43, .8));
+background-position: center center;
+background-size: cover; 
+width: 100vw;
+}
+
+
+/* Conteneur centré avec Bootstrap */
+.container {
+  max-width: 400px;
+}
+
+/* Style du formulaire de login */
+.login_box {
+  padding: 30px;
+  border-radius: 8px;
+  backdrop-filter: blur(25px);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.login_box:hover {
+  transform: translateY(-5px); /* Effet de survol pour dynamiser */
+}
+
+/* En-tête du formulaire */
+.login-header h4 {
+  font-weight: 600;
+  color: white;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Style des champs de texte */
+.input_box .form-control {
+  padding-left: 35px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background: transparent;
+  color: white;
+}
+
+.input_box .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+}
+
+/* Label dans les champs de saisie */
+.input_box label {
+  position: absolute;
+  top: 50%;
+  left: 35px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #aaa;
+  transition: all 0.3s ease;
+}
+
+.input_box .form-control:focus ~ label,
+.input_box .form-control:not(:placeholder-shown) ~ label {
+  top: -10px;
+  left: 35px;
+  font-size: 12px;
+  color: #007bff;
+}
+
+/* Icônes dans les champs de saisie */
+.input_box .icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10px;
+  font-size: 20px;
+  color: #007bff;
+}
+
+/* Icône de l'œil pour le mot de passe */
+#toggle-password {
+  font-size: 20px;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#toggle-password:hover {
+  color: #0056b3;
+}
+
+/* Bouton de soumission */
+.input-submit {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 12px 0;
+  border-radius: 25px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.input-submit:hover {
+  background-color: #0056b3;
+}
+
+.forgot {
+  width: 100%;
+  text-align: center;
+  align-items: center;
+}
+
+/* Liens de mot de passe oublié et inscription */
+.forgot a,
+.register a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot a:hover,
+.register a:hover {
+  text-decoration: underline;
+}
+
+/* Effet de mise en forme du formulaire d'enregistrement */
+.register {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Transition d'arrière-plan */
+body {
+  transition: background-color 0.3s ease;
+}
+
+.label {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  transition: 0.2s;
+}
+
+.form-control:focus ~ .label,
+.form-control:valid .label {
+position: absolute;
+top: -10px;
+left: 20px;
+font-size: 14px;
+background-color: var(--primary-color);
+border-radius: 30px;
+color: var(--black-color);
+padding: 0 10px;}
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique de user.nom</title>
+      <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style4.css')}}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="title"> <h1>Historique de Recherche</h1></div>
+    <div class="div-liste">
+            {% for r in repas %}
+                <div class="liste-elt">
+                    <form action="{{ url_for('repas')}}" method="post">
+                        <button value="{{r.id}}" name = "id">
+                            <div class="img-div"><img class="img-historique" src="{{url_convert(r.image_url)}}" alt="{{url_convert(r.image_url)}}"></div>
+                            <div class="nom">{{ r.nom }}</div>
+                        </button>
+                    </form>
+                </li>
+            {% endfor %}
+    </div>
+
+</body>
+</html>

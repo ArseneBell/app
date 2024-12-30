@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <!-- Body Start -->
+         {% for cle in types %}
+            <div class="card__container swiper">
+               <div class="type_bar p-3">
+                  <div class="type_non text-primary">{{ cle }}</div> <div class="bar_espace"></div>
+               </div>
+               <div class="card__content">
+                  <div class="swiper-wrapper">
+               {%  for repas in types[cle] %}     
+                        <article class="card__article swiper-slide">
+                           <div class="card__image">
+                              <img src="{{url_convert(repas.image_url)}}" alt="{{url_convert(repas.image_url)}}" class="card__img" >
+                              <div class="card__shadow"></div>
+                           </div>
+            
+                           <div class="card__data">
+                              <h3 class="card__name">{{ repas['nom'] }}</h3>
+                              <p class="card__description">
+                                 {{ cle }} du Cameroun et d'Afrique
+                                 {% if session['nom_user'] %}
+                                 <form action="" class="star-form">
+                                    <!-- Ajout des identifiants pour pouvoir les sélectionner -->
+                                    <input type="hidden" name="repas" id="{{ repas['id'] }}" value="{{ repas['id'] }}">
+                                    <input type="hidden" name="user" id="user{{ repas['id'] }}" value="{{ session['id'] }}">
+                                    
+                                    <!-- Spécifiez le type de bouton pour éviter le comportement submit -->
+                                    <button class="btn-favoris" type="submit" onclick="star()">
+                                       {% if repas['id'] in favoris%}
+                                        <i class="fa fa-heart favoris" style="color: red;"></i>
+                                       {% else%}
+                                        <i class="fa fa-heart text-white favoris"></i>
+                                       {% endif %}
+                                    </button>
+                                 </form>
+                                                               
+                                 {% endif %}
+                              </p>
+                              <form method="post" action="{{ url_for('repas') }}">
+                                 <button class="card__button" value="{{repas['id']}}" name = "id">Voir Plus</button>
+                              </form>
+                           </div>
+                        </article>
+               {% endfor %}   
+         
+                  </div>
+               </div>
+   
+               <!-- Navigation buttons -->
+               <div class="swiper-button-next text-primary">
+                  <i class="ri-arrow-right-s-line"></i>
+               </div>
+               
+               <div class="swiper-button-prev text-primary">
+                  <i class="ri-arrow-left-s-line"></i>
+               </div>
+   
+               <!-- Pagination -->
+               <div class="swiper-pagination bg-primary text-primary"></div>
+            </div>
+         {% endfor %}
+         <script>
+                                 // Sélection de tous les formulaires ayant la classe "formulaire"
+                                 const formulaires = document.querySelectorAll('.star-form');
+                             
+                                 // Ajout de l'événement de soumission pour chaque formulaire
+                                 formulaires.forEach(formulaire => {
+                                     formulaire.addEventListener('submit', async function(event) {
+                                         event.preventDefault(); // Empêche le rechargement de la page
+                             
+                                         // Récupération des données du formulaire actuel
+                                         const formData = new FormData(formulaire);
+                                         console.log(formData)
+                             
+                                         // Conversion en objet pour l'envoyer au serveur
+                                         const formDataObj = Object.fromEntries(formData.entries());
+                             
+                                         try {
+                                             // Envoi de la requête via la Fetch API
+                                             const response = await fetch('/favoris', {
+                                                 method: 'POST',
+                                                 headers: {
+                                                     'Content-Type': 'application/json'
+                                                 },
+                                                 body: JSON.stringify(formDataObj)
+                                             });
+                             
+                                             const result = await response.json();
+                                             console.log('Réponse du serveur :', result);
+
+                                             const icon = formulaire.querySelector('i.favoris');
+
+                                             if (icon.classList.contains('text-white')) {
+                                                // Si la classe 'text-white' est présente, on la retire et on change la couleur
+                                                icon.classList.remove('text-white'); // Retirer l'ancienne classe
+                                                icon.style.color = 'red'; // Appliquer la couleur jaune
+                                             } else {
+                                                // Si la classe 'text-white' n'est pas présente, on l'ajoute
+                                                icon.classList.add('text-white'); // Ajouter la nouvelle classe
+                                                icon.style.color = ''; // Retirer la couleur personnalisée
+                                             }
+
+                             
+                                         } catch (error) {
+                                             console.error('Erreur lors de l\'envoi des données :', error);
+                                         }
+                                     });
+                                 });
+                                </script>
+          
+         
+         <!--=============== SWIPER JS ===============-->
+    <script src="{{ url_for('static', filename='assets/js/swiper-bundle.min.js')}}"></script>
+    <script src=""></script>
+   
+         <!--=============== MAIN JS ===============-->
+    <script src="{{ url_for('static', filename='assets/js/main.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/favoris.js')}}"></script>
+
+        <!-- Body End -->
+{% endblock %}
