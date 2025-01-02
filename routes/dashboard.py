@@ -71,48 +71,51 @@ def create_dashboard(server):
     })
 
     app.layout = html.Div([
-        html.H1("Dashboard Interactif", style={'text-align': 'center'}),
+        html.H1("Dashboard Interactif", className='text-center my-4'),
 
         # Ligne 1 : Graphique en barres + Diagramme camembert
         html.Div([
             html.Div([
-                html.H3("Graphique des repas favoris"),
+                html.H3("Graphique des repas favoris", className="mb-3"),
                 dcc.Input(
                     id='input-age',
                     type='number',
                     placeholder='Entrez un âge',
-                    style={'margin-right': '10px', 'width': '80%'}
+                    className='form-control mb-3'
                 ),
-                html.Button("Entrer", id='submit-button', n_clicks=0),
-                dcc.Graph(id='graph-repas-favoris', style={'height': '300px'}),
-            ], style={'display': 'inline-block', 'width': '48%', 'vertical-align': 'top', 'margin-right': '2%'}),
-
-
-        html.Div([
-            html.H3("Vues en fonction des Types"),
-            dcc.Dropdown(
-                id='category-dropdown',
-                multi=True
-            ),
-            dcc.Graph(id='pie-chart', style={'height': '500px'}),
-        ], style={'display': 'inline-block', 'width': '48%', 'vertical-align': 'top'})
-    ], style={'margin-bottom': '20px'}),
-
-        # Ligne 2 : Nuage de points + Diagramme de courbe
+                html.Button("Entrer", id='submit-button', n_clicks=0, className='btn btn-primary mb-3'),
+                dcc.Graph(id='graph-repas-favoris', style={'height': '400px'}),
+            ], className="col-md-6 col-sm-12 mb-4"),
 
             html.Div([
-                html.H3("Diagramme de Courbe"),
+                html.H3("Vues en fonction des Types", className="mb-3"),
+                dcc.Dropdown(
+                    id='category-dropdown',
+                    multi=True,
+                    className='form-select'
+                ),
+                dcc.Graph(id='pie-chart', style={'height': '400px'}),
+            ], className="col-md-6 col-sm-12 mb-4")
+        ], className="row"),
+
+        # Ligne 2 : Nuage de points + Diagramme de courbe
+        html.Div([
+
+            html.Div([
+                html.H3("Diagramme de Courbe", className="mb-3"),
                 dcc.Dropdown(
                     id='curve-metric-dropdown',
                     options=[
                         {"label": "Valeur A", "value": "Valeur A"},
                         {"label": "Valeur B", "value": "Valeur B"}
                     ],
-                    value="Valeur A"
+                    value="Valeur A",
+                    className='form-select'
                 ),
-                dcc.Graph(id='curve-chart', style={'height': '300px'}),
-            ], style={'display': 'inline-block', 'width': '48%', 'vertical-align': 'top'})
-        ])
+                dcc.Graph(id='curve-chart', style={'height': '400px'}),
+            ], className="col-12 col-md-6  mb-4")
+        ], className="row")
+    ], className="container")
 
     @app.callback(
         [Output('category-dropdown', 'options'),
