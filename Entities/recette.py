@@ -12,7 +12,7 @@ class Recettes(Base):
     type = Column('type', String(255))
 
 
-    def __init__(self, nom = '', instructions = '', image_url = '', lien_youtube = '', temps_de_cuisson = '', type = ''):
+    def __init__(self, nom = '', instructions = '', image_url = '', lien_youtube = '', temps_de_cuisson = '0', type = ''):
         self.nom = nom
         self.type = type
         self.instructions = instructions
@@ -30,7 +30,7 @@ class Recettes(Base):
     
     def Search_recette(self, id):
         session = self.Session()
-        result = session.query(Recettes).filter(Recettes.id == id).first()
+        result = session.query(Recettes).filter(Recettes.id == int(id)).first()
         return result
     
 
@@ -38,6 +38,15 @@ class Recettes(Base):
         session = self.Session()
         result = session.query(Recettes).filter(Recettes.nom == nom).first()
         return result
+    
+    def Update_vues(self, id):
+        session = self.Session()
+        result = session.query(Recettes).filter(Recettes.id == int(id)).first()
+        if result != None:
+            result.temps_de_cuisson = self.temps_de_cuisson
+            session.commit()
+            return True
+        return False
     
 
     

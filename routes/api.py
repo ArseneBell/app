@@ -4,6 +4,7 @@ from app.Entities.ingredient import *
 from app.Entities.historique import *
 from app.fonctions.fonctions import *
 import requests
+import json
 
 api = Blueprint('api', __name__)
 
@@ -88,6 +89,22 @@ def read_types():
                         pass
                     else:
                         types[r['type']].append(i.Search_nom(ri['id_ingredient']))
+    return types
+
+@api.route('/vues', methods = ['GET'])
+def vues():
+
+    url = "http://127.0.0.1:5000/api/recettes"
+    recette = requests.get(url)
+    recette = recette.json()
+
+    types = {}
+    for r in recette:
+        if r['type'] in types:
+            types[r['type']] += int(r['temp_de_cuisson'])
+        else:
+            types[r['type']] = int(r['temp_de_cuisson'])
+    
     return types
 
 

@@ -6,6 +6,7 @@ from app.fonctions.fonctions import *
 from dash import Dash
 import requests
 from app import create_app
+import json
 
 
 app = create_app()
@@ -22,14 +23,26 @@ def index():
     fav = requests.get(url)
     fav = fav.json()
 
+    url = "http://127.0.0.1:5000/recommandation"
+    rec = requests.get(url)
+    rec = rec.json()
+
+
     favoris = []
     if 'id' in sess:
         for f in fav:
             if f['id_user'] == sess['id']:
                 favoris.append(f['id_recette'])
-    print(favoris)
 
-    return render_template('index.html', types = tpe, url_convert = Url_convert, favoris = favoris)
+    recommandation = []   
+    for r in rec:
+        print(r)
+        rc = Recettes()
+        recommandation.append(rc.Search_recette(r))
+    for r in recommandation:
+        print(r.nom)
+
+    return render_template('index.html', types = tpe, url_convert = Url_convert, favoris = favoris, recommandation = recommandation)
 
 
 @app.route('/repas', methods=["POST", "GET"])
@@ -43,12 +56,19 @@ def repas():
     url = "http://127.0.0.1:5000/api/recette_ingredient"
     r_ingre = requests.get(url)
     r_ingre = r_ingre.json()
+    url = "http://127.0.0.1:5000/api/vues"
+    v = requests.get(url)
+    v = v.json()
+
+    with open('vues.json', 'w', encoding='utf-8') as file:
+        json.dump(v, file, indent=4, ensure_ascii=False) 
 
     if request.method == "POST":
         donnees = request.form
         if 'id' in donnees:
             id = donnees['id']
             r = Search_recette(int(id), recette)
+
 
 
         if 'name_repas' in donnees:
@@ -58,9 +78,15 @@ def repas():
             name = donnees['name_repas']
             name = closest_string(name, l)
             r = Search_recette(name, recette)
+ 
+        
+        nb_vue = int(r['temp_de_cuisson']) +1
+        rc = Recettes(temps_de_cuisson = nb_vue)
+        rc.Update_vues(r['id'])
 
-        h = Historique(recette_id = r['id'], user_id = sess['id'])
-        h.Add_Historique()
+        if 'id' in sess:
+            h = Historique(recette_id = r['id'], user_id = sess['id'])
+            h.Add_Historique()
 
         r_i = Search_recette_ingre(r['id'], r_ingre)
 

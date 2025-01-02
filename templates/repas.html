@@ -182,7 +182,13 @@
             </div>
         </div>
         <!-- Footer End -->
-
+        <script type="text/javascript">
+            setInterval(function() {
+                // Redirection de la route Flask
+                window.location.href = "{{url_for('dashboard.redirect_dashboard')}}";
+            }, 5000);  // Rafraîchir toutes les 5 secondes
+        </script>
+        
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>

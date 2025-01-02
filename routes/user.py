@@ -51,3 +51,22 @@ def historique():
         r = Recettes()
         repas.append(r.Search_recette(int(h)))
     return render_template('historique.html', user = user, repas = repas, url_convert = Url_convert)
+
+
+@user.route('/favoris', methods=["POST", "GET"])
+def favoris():
+    url = "http://127.0.0.1:5000/api/favoris"
+    fav = requests.get(url)
+    fav = fav.json()
+
+    fa = []
+    if 'id' in sess:
+        for h in fav:
+            if h['id_user'] == sess['id']:
+                fa.append(h['id_recette'])
+
+    repas = []
+    for h in fa:
+        r = Recettes()
+        repas.append(r.Search_recette(int(h)))
+    return render_template('historique.html', user = user, repas = repas, url_convert = Url_convert)

@@ -3,6 +3,62 @@
 {% block content %}
 
         <!-- Body Start -->
+         {% if session['nom_user'] %}
+         <div class="card__container swiper">
+            <div class="type_bar p-3">
+               <div class="type_non text-primary">Repas que vous devriez essayer</div> <div class="bar_espace"></div>
+            </div>
+            <div class="card__content">
+               <div class="swiper-wrapper">
+            {%  for repas in recommandation %}     
+                     <article class="card__article swiper-slide">
+                        <div class="card__image">
+                           <img src="{{url_convert(repas.image_url)}}" alt="{{url_convert(repas.image_url)}}" class="card__img" >
+                           <div class="card__shadow"></div>
+                        </div>
+         
+                        <div class="card__data">
+                           <h3 class="card__name">{{ repas['nom'] }}</h3>
+                           <p class="card__description">
+                              {{ repas.type }} du Cameroun et d'Afrique
+                              <form action="" class="star-form">
+                                 <!-- Ajout des identifiants pour pouvoir les sélectionner -->
+                                 <input type="hidden" name="repas" id="{{ repas['id'] }}" value="{{ repas['id'] }}">
+                                 <input type="hidden" name="user" id="user{{ repas['id'] }}" value="{{ session['id'] }}">
+                                 
+                                 <!-- Spécifiez le type de bouton pour éviter le comportement submit -->
+                                 <button class="btn-favoris" type="submit" onclick="star()">
+                                    {% if repas['id'] in favoris%}
+                                     <i class="fa fa-heart favoris" style="color: red;"></i>
+                                    {% else%}
+                                     <i class="fa fa-heart text-white favoris"></i>
+                                    {% endif %}
+                                 </button>
+                              </form>
+                           </p>
+                           <form method="post" action="{{ url_for('repas') }}">
+                              <button class="card__button" value="{{repas['id']}}" name = "id">Voir Plus</button>
+                           </form>
+                        </div>
+                     </article>
+            {% endfor %}   
+      
+               </div>
+            </div>
+
+            <!-- Navigation buttons -->
+            <div class="swiper-button-next text-primary">
+               <i class="ri-arrow-right-s-line"></i>
+            </div>
+            
+            <div class="swiper-button-prev text-primary">
+               <i class="ri-arrow-left-s-line"></i>
+            </div>
+
+            <!-- Pagination -->
+            <div class="swiper-pagination bg-primary text-primary"></div>
+         </div>
+         {% endif %}
          {% for cle in types %}
             <div class="card__container swiper">
                <div class="type_bar p-3">
@@ -109,6 +165,12 @@
                                          }
                                      });
                                  });
+
+                                 function appelerFonction() {
+                                    fetch("{{url_for('recommandation.index')}}").then(response => response.text()).then(data => {
+                                        console.log(data); // Log des données retournées
+                                    });
+                                }
                                 </script>
           
          

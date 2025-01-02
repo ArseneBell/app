@@ -151,3 +151,7 @@ def SearchUser(id):
     result = session.query(User).filter(User.id == id).first()
     print(result.nom)
     return result
+
+
+def clean_text(text):
+    return text.encode("utf-8", "replace").decode("utf-8")

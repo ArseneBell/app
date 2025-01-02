@@ -16,34 +16,64 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `User`
+-- Table structure for table `Historique`
 --
 
-DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `Historique`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `User` (
+CREATE TABLE `Historique` (
+  `recette_id` int NOT NULL,
+  `utilisateur_id` int NOT NULL,
+  `date` datetime NOT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `mot_de_pass` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `preferences` text COLLATE utf8mb4_general_ci,
-  `sexe` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `prenom` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `numero` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `recette_id` (`recette_id`),
+  KEY `utilisateur_id` (`utilisateur_id`),
+  CONSTRAINT `Historique_ibfk_1` FOREIGN KEY (`recette_id`) REFERENCES `recettes` (`id`),
+  CONSTRAINT `Historique_ibfk_2` FOREIGN KEY (`utilisateur_id`) REFERENCES `Users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `User`
+-- Dumping data for table `Historique`
 --
 
-LOCK TABLES `User` WRITE;
-/*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'Fortune','kamchamclaude@gmail.com','$2b$12$UQyUJz4.NPjluVdWGh.pbeP2sl.Tw7FMUhmAIZDnuXg4Q.o2XQ.PK','Légumes, Fruits','Femme','Claude',695010573),(2,'Kevin','kevin.bell@facsciences-uy1.cm','$2b$12$8ZNHIm.TxJjpfzqZaWE7Me1uHGQc3cg/hmtb7DSshVSUPAESqbwpK','Légumes, Fruits','Homme','Bell',621176136);
-/*!40000 ALTER TABLE `User` ENABLE KEYS */;
+LOCK TABLES `Historique` WRITE;
+/*!40000 ALTER TABLE `Historique` DISABLE KEYS */;
+INSERT INTO `Historique` VALUES (5,1,'2024-12-23 02:50:08',1),(11,1,'2024-12-23 02:50:08',2),(3,1,'2024-12-23 02:56:51',3),(1,1,'2024-12-23 02:57:34',4),(20,1,'2024-12-29 17:13:19',5),(8,1,'2024-12-29 17:22:33',6),(20,1,'2024-12-29 17:53:57',7),(8,1,'2024-12-29 18:49:03',8);
+/*!40000 ALTER TABLE `Historique` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Users`
+--
+
+DROP TABLE IF EXISTS `Users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) DEFAULT NULL,
+  `anneeNaiss` int DEFAULT NULL,
+  `sexe` varchar(255) DEFAULT NULL,
+  `tel` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `preferences` varchar(255) DEFAULT NULL,
+  `mot_de_pass` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Users`
+--
+
+LOCK TABLES `Users` WRITE;
+/*!40000 ALTER TABLE `Users` DISABLE KEYS */;
+INSERT INTO `Users` VALUES (1,'Bell',2005,'masculin','1234','kevin.bell@facsciences-uy1.cm','none','aomine477','user'),(2,'Panda',2000,'masculin','620983424','panda@gmail.com','none','1234','user'),(3,'Ryomen',1999,'masculin','1234','r@gmail.com','none','1234','user'),(4,'aa',1000,'masculin','222','aa@gmail.com','none','www','user'),(5,'Claude',2002,'feminin','12345','c@email.com','none','admin','user');
+/*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -58,7 +88,7 @@ CREATE TABLE `favoris` (
   `id_recette` int NOT NULL,
   PRIMARY KEY (`id_user`,`id_recette`),
   KEY `id_recette` (`id_recette`),
-  CONSTRAINT `favoris_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `User` (`id`),
+  CONSTRAINT `favoris_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `Users` (`id`),
   CONSTRAINT `favoris_ibfk_2` FOREIGN KEY (`id_recette`) REFERENCES `recettes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -69,37 +99,10 @@ CREATE TABLE `favoris` (
 
 LOCK TABLES `favoris` WRITE;
 /*!40000 ALTER TABLE `favoris` DISABLE KEYS */;
+INSERT INTO `favoris` VALUES (1,3),(2,5),(1,9),(1,18),(1,23),(2,25),(2,40);
 /*!40000 ALTER TABLE `favoris` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `historique_recherche`
---
-
-DROP TABLE IF EXISTS `historique_recherche`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `historique_recherche` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `utilisateur_id` int DEFAULT NULL,
-  `date_recherche` datetime DEFAULT CURRENT_TIMESTAMP,
-  `recette_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `utilisateur_id` (`utilisateur_id`),
-  KEY `recette_id` (`recette_id`),
-  CONSTRAINT `historique_recherche_ibfk_1` FOREIGN KEY (`utilisateur_id`) REFERENCES `User` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `historique_recherche_ibfk_2` FOREIGN KEY (`recette_id`) REFERENCES `recettes` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `historique_recherche`
---
-
-LOCK TABLES `historique_recherche` WRITE;
-/*!40000 ALTER TABLE `historique_recherche` DISABLE KEYS */;
-/*!40000 ALTER TABLE `historique_recherche` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `ingredients`
@@ -193,4 +196,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-15 21:31:23
+-- Dump completed on 2024-12-30 14:16:36

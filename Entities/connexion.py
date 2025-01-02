@@ -4,8 +4,8 @@ from sqlalchemy.orm import sessionmaker, relationship
 import sqlalchemy.exc
 
 
-user ='root'
-password = ''
+user ='arsene'
+password = 'Aomine477%'
 host = 'localhost'
 port ='3306'
 database = 'App'
